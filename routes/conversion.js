@@ -32,7 +32,7 @@ conversionRouter.post("/convertFiat", async (req, res) => {
     res.json({
       err: {
         err,
-        message: "Phone number or Email has already been used",
+        message: "err",
       },
     });
   }
