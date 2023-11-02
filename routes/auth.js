@@ -1,9 +1,10 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 
-const { generateUserId, createSettings } = require("../services/helpers");
+const { generateUserId, createSettings, convertCurrency } = require("../services/helpers");
 const { UserModel, AccountModel } = require("../db/index");
 const CryptoJS = require("crypto-js");
+const user = require("../db/models/user");
 
 let authRouter = express.Router();
 
@@ -160,7 +161,9 @@ authRouter.get("/getUser/:token", async (req, res) => {
       userId,
     });
 
-    res.json({ User, UserAccount });
+    let userBalance = convertCurrency(UserAccount.balance, "USD", UserAccount.prefferedCurrency)
+
+    res.json({ User, UserAccount, balanceInUsd: userBalance });
   } catch (error) {
     console.error(error);
     res
@@ -171,4 +174,4 @@ authRouter.get("/getUser/:token", async (req, res) => {
 
 module.exports = authRouter;
 
-// 	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgxNjg1OTY4NzAsImVtYWlsQWRkcmVzcyI6ImFiZHVsYXplZXp1c21hbjAxN0BnbWFpbC5jb20iLCJpYXQiOjE2OTg4ODQzNTR9.3yCoG9e1gaOgaZePm0AeHi1gDSdC45QDozY2vreNRi8"
+// 	"deploy": https://api.render.com/deploy/srv-cl1hh9rmgg9c738h89k0?key=-DckA4uNEak
