@@ -20,7 +20,10 @@ txnRouter.post("/transferFunds", async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
 
-    if (senderUser.transactionsPin !== pin) {
+    console.log(senderUser.transactionsPin)
+    console.log(parseInt(pin))
+
+    if (senderUser.transactionsPin !== parseInt(pin)) {
       return res.status(400).json({ message: "Incorrect Pin" });
     }
 
@@ -57,9 +60,9 @@ txnRouter.post("/transferFunds", async (req, res) => {
   }
 });
 
-txnRouter.get("/getTxns", async (req, res) => {
+txnRouter.get("/getTxns/:token", async (req, res) => {
   try {
-    const token = req.body.token;
+    const token = req.params.token;
 
     var decodedToken = jwt.verify(token, process.env.secret_key);
 
